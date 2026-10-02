@@ -9,7 +9,7 @@ Shark Tank, Sandcastle and Fortress. They retain King and Princess Tower artwork
 blue/red team exports and source animation frames. Purchases, selection and save
 restoration are checked for both Crown roles.
 
-All 1,271 tests passed. The built release was opened in Chrome; 144 troop drawings
+All 1,273 tests passed. The built release was opened in Chrome; 144 troop drawings
 covered both teams and idle/run/attack states. Collection, shop, a battle and
 Touchdown opened without script errors or failed game assets.
 

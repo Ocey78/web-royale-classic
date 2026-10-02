@@ -8,11 +8,11 @@ Sandcastle and Fortress—can be bought and equipped. Modern cards, evolutions a
 Heroes are not added.
 
 The ready-to-play website is in `dist/`. Source image and audio files can be restored
-from the verified distribution with `npm run restore`; use `npm test`,
+from the verified distribution with `node tools/restore-source.cjs`; use `npm test`,
 `npm run build` and `npm run serve` for development. Browser saves are local to
 each website address; export a save before switching addresses.
 
-Verification: all 1,271 tests passed, and Chrome checks exercised the new portraits,
+Verification: all 1,273 tests passed, and Chrome checks exercised the new portraits,
 144 animated troop drawings, the shop, a battle and the separate Touchdown field.
 See `BUILD-NOTES-v0.50.2.md` for the current scope.
 
