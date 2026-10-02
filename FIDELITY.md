@@ -1,4 +1,22 @@
-# Fidelity update — v0.50.2
+# Fidelity update — Classic v0.50.3
+
+This artwork patch uses the original **16.402.2 Touchdown stadium**, including
+**168 source placements**, separate pitch/backdrop/lighting compositions and
+original flag/audience animation where authored. The **1,902 flat-UV triangle
+chunks** for source pitch markings now render. Source white goal-strip centers
+**56.8333333 / 578.5** map to the existing scoring lines **25 / 615**; colored
+end-zone bands do not define scoring. Classic's historical battle engine and
+field rules are preserved. This supersedes the prior 551×647 reference-texture
+stadium and statements that complete original 2D stadium art was unavailable.
+
+Original scene imports do not establish complete native shaders, dynamic
+shadows, ambient cloud/blimp effects, separate light emitters or universal
+animated-backdrop parity. The v0.50.3 build passed **1,281 tests** and actual Chrome
+checks of all three Touchdown modes across four viewports, including touch
+deployment, source animation clocks and goal-mark pixels. Procedural maps retain
+their static scenery caches when ambient animation is toggled. GitHub Pages
+patch deployment remains pending; see
+[BUILD-NOTES-v0.50.3.md](BUILD-NOTES-v0.50.3.md).
 
 Classic retains its historical 102-card roster, balance tables and arenas. Higher
 resolution compatible portraits and 83 troop/building scenes use the supplied

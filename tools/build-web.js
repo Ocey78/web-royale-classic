@@ -3,7 +3,7 @@
 // application archive, source font, or first-run third-party download is emitted.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{gzipSync}=require('node:zlib');
 const compactScenes=process.argv.includes('--compact-scenes');
-const root=path.resolve(__dirname,'..'),out=path.join(root,'dist'),VERSION='0.50.2';
+const root=path.resolve(__dirname,'..'),out=path.join(root,'dist'),VERSION='0.50.3';
 const read=p=>fs.readFileSync(path.join(root,p)),json=p=>JSON.parse(read(p)),hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 require('./restore-source.cjs').restore(root);
 fs.mkdirSync(out,{recursive:true});

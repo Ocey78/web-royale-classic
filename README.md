@@ -1,20 +1,25 @@
-# Web Royale Classic v0.50.2
+# Web Royale Classic v0.50.3
 
-This Classic release imports higher resolution portraits and compatible troop and
-building animation artwork from the supplied Clash Royale 16.402.2 asset package.
-Its 102-card roster, historical 3.2557.2 balance data, arenas and game rules remain
-the Classic snapshot. Three additional original seasonal tower skins—Shark Tank,
-Sandcastle and Fortress—can be bought and equipped. Modern cards, evolutions and
-Heroes are not added.
+This patch replaces the earlier Touchdown reference texture with the original
+stadium artwork, source decoration placements and field markings from the
+supplied Clash Royale **16.402.2** package. It corrects rendering of the source
+markings while preserving Classic's historical engine and scoring geometry.
 
-The ready-to-play website is in `dist/`. Source image and audio files can be restored
-from the verified distribution with `node tools/restore-source.cjs`; use `npm test`,
-`npm run build` and `npm run serve` for development. Browser saves are local to
-each website address; export a save before switching addresses.
+Classic retains its **102-card** roster and **3.2557.2** balance data,
+**14 Trophy Road arenas plus Training Camp**, refreshed compatible original
+portraits and animations, and the three original seasonal tower styles:
+Shark Tank, Sandcastle and Fortress. Modern cards, Heroes and Evolutions are
+not added. Complete 1:1 native-game fidelity remains unverified.
 
-Verification: all 1,273 tests passed, and Chrome checks exercised the new portraits,
-144 animated troop drawings, the shop, a battle and the separate Touchdown field.
-See `BUILD-NOTES-v0.50.2.md` for the current scope.
+The ready-to-play website is in `dist/`. Source image and audio files can be
+restored from the verified distribution with `node tools/restore-source.cjs`;
+use `npm test`, `npm run build` and `npm run serve` for development. Browser
+saves are local to each website address; export a save before changing addresses.
+
+The v0.50.3 build passed **1,281 tests** and actual Chrome Touchdown checks;
+GitHub Pages patch deployment remains pending. See
+[BUILD-NOTES-v0.50.3.md](BUILD-NOTES-v0.50.3.md) for this patch and
+[BUILD-NOTES-v0.50.2.md](BUILD-NOTES-v0.50.2.md) for the preceding verified release.
 
 ## Previous v0.50.0 release
 
@@ -39,7 +44,7 @@ verified `dist/` to keep this full-build download smaller.
 
 ## Historical release and project documentation
 
-The sections below describe earlier releases. v0.50.0 build notes take precedence
+The sections below describe earlier releases. v0.50.3 build notes take precedence
 where behavior, versions, prices, mode lists, or timing differ.
 
 # Rebuilt v0.40.1 distribution

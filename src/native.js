@@ -97,6 +97,10 @@ function projectilePose(p,target){const pos=projectilePosition(p,target),distanc
 }
 // The six Canvas affine coefficients mapping source points into destination points.
 function affine(src,dst){const [p,q,r]=src,[a,b,c]=dst,ux=q[0]-p[0],uy=q[1]-p[1],vx=r[0]-p[0],vy=r[1]-p[1],det=ux*vy-uy*vx;if(Math.abs(det)<1e-8)return null;const ax=b[0]-a[0],ay=b[1]-a[1],bx=c[0]-a[0],by=c[1]-a[1];const m=[(ax*vy-bx*uy)/det,(ay*vy-by*uy)/det,(bx*ux-ax*vx)/det,(by*ux-ay*vx)/det,0,0];m[4]=a[0]-m[0]*p[0]-m[2]*p[1];m[5]=a[1]-m[1]*p[0]-m[3]*p[1];return m.map(v=>Math.abs(v)<1e-12?0:v);}
+// Source vector polygons may give every vertex one texture coordinate. Their
+// authored XY still defines a real polygon; sample that texel through its clip.
+function flatTexel(img,uv,xy){if(!uv.length||!uv.every(p=>Math.abs(p[0]-uv[0][0])<1e-5&&Math.abs(p[1]-uv[0][1])<1e-5))return null;const width=img.naturalWidth||img.width,height=img.naturalHeight||img.height,x=Math.min(...xy.map(p=>p[0])),y=Math.min(...xy.map(p=>p[1])),w=Math.max(...xy.map(p=>p[0]))-x,h=Math.max(...xy.map(p=>p[1]))-y;if(w<=0||h<=0)return null;return{sx:Math.max(0,Math.min(width-1,Math.floor(uv[0][0]+1e-5))),sy:Math.max(0,Math.min(height-1,Math.floor(uv[0][1]+1e-5))),x,y,w,h};}
+function paintTexel(c,img,xy,p){c.save();c.beginPath();xy.forEach((v,i)=>i?c.lineTo(...v):c.moveTo(...v));c.closePath();c.clip();c.imageSmoothingEnabled=false;c.drawImage(img,p.sx,p.sy,1,1,p.x,p.y,p.w,p.h);c.restore();}
 // SC frequently describes a stretched texel as a zero-area UV rectangle.
 // A 2D affine solver cannot invert it. Give that texel its physical one-pixel
 // footprint before mapping, preserving the varying axis and the original pixels.
@@ -163,12 +167,13 @@ class Scene{
   if(!plan){plan=[];for(const chunk of this.data.shapes[id]||[]){
    const img=this.images[chunk.texture];if(!img)throw Error('Missing SC texture');
    const uv=expandStripeUV(chunk.uv.map(p=>[p[0]*img.naturalWidth,p[1]*img.naturalHeight]),img.naturalWidth,img.naturalHeight),xy=chunk.xy;
+   const texel=flatTexel(img,chunk.uv.map(p=>[p[0]*(img.naturalWidth||img.width),p[1]*(img.naturalHeight||img.height)]),xy);if(texel){plan.push({img,xy,texel});continue;}
    let m=null;for(let j=1;j<xy.length-1&&!m;j++)m=affine([uv[0],uv[j],uv[j+1]],[xy[0],xy[j],xy[j+1]]);
    if(!m)continue;
    if(uv.every((p,i)=>{const q=point(m,p);return Math.hypot(q[0]-xy[i][0],q[1]-xy[i][1])<.45}))plan.push({img,xy,m});
    else for(let j=1;j<xy.length-1;j++){const v=[xy[0],xy[j],xy[j+1]],matrix=affine([uv[0],uv[j],uv[j+1]],v);if(matrix)plan.push({img,xy:v,m:matrix});}
   }this.rawShapePlans.set(id,plan);}
-  for(const op of plan){c.save();c.beginPath();op.xy.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.closePath();c.clip();c.transform(...op.m);c.drawImage(op.img,0,0);c.restore();}
+  for(const op of plan){if(op.texel){paintTexel(c,op.img,op.xy,op.texel);continue;}c.save();c.beginPath();op.xy.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.closePath();c.clip();c.transform(...op.m);c.drawImage(op.img,0,0);c.restore();}
  }
  releaseRasters(){
   const images=new Set([...this.cache.values(),...this.tintCache.values()].map(s=>s.image));
@@ -182,6 +187,7 @@ class Scene{
   const pts=chunks.flatMap(s=>s.xy),lo=[Math.floor(Math.min(...pts.map(p=>p[0])))-1,Math.floor(Math.min(...pts.map(p=>p[1])))-1],hi=[Math.ceil(Math.max(...pts.map(p=>p[0])))+1,Math.ceil(Math.max(...pts.map(p=>p[1])))+1];
   const logicalW=hi[0]-lo[0],logicalH=hi[1]-lo[1],quality=shapeRasterScale(logicalW,logicalH,(this.data.rasterScale||1)*this.textureScale),cv=canvas(logicalW*quality,logicalH*quality);const c=cv.getContext('2d');c.scale(quality,quality);c.translate(-lo[0],-lo[1]);c.imageSmoothingEnabled=true;
   for(const chunk of chunks){const img=this.images[chunk.texture];if(!img)throw Error('Missing SC texture');const uv=expandStripeUV(chunk.uv.map(p=>[p[0]*img.naturalWidth,p[1]*img.naturalHeight]),img.naturalWidth,img.naturalHeight);const xy=chunk.xy;
+   const texel=flatTexel(img,chunk.uv.map(p=>[p[0]*(img.naturalWidth||img.width),p[1]*(img.naturalHeight||img.height)]),xy);if(texel){paintTexel(c,img,xy,texel);continue;}
    // Most source polygons are clipped affine sprites. Use one draw where possible
    // to avoid triangle seams; deformed meshes use their source triangle fan.
    let m=null;for(let j=1;j<xy.length-1&&!m;j++)m=affine([uv[0],uv[j],uv[j+1]],[xy[0],xy[j],xy[j+1]]);
@@ -279,6 +285,7 @@ function sceneDependencies(data,game,decks,arenaId){
  if(arenaId!=='custom'){const arena=data.arenas.find(a=>a.id===arenaId)||data.arenas[0];found.add(arena.scene);for(const ob of arena.objects)if(ob.scene)found.add(ob.scene);}
  return [...found].filter(name=>data.scenes[name]).sort();
 }
+function touchdownSceneDependencies(data){const a=data.touchdownArena;return a?[...new Set([a.scene,...(a.objects||[]).map(o=>o.scene||a.scene)])]:[];}
 function customSourceArenaId(layout){
  const theme=layout?.theme||'';
  if(theme==='jungle'||theme==='garden')return'jungle';
@@ -311,7 +318,7 @@ class Library{
  }
  async ensureScenes(names){const queue=[...new Set(names)];let index=0;const worker=async()=>{while(index<queue.length){const name=queue[index++];await this.fetchScene(name);}};await Promise.all(Array.from({length:Math.min(4,queue.length)},worker));return this;}
  retainScenes(names){const keep=new Set(names),textures=new Set();for(const n of keep)for(const t of this.data.scenes[n]?.textures||[])textures.add(t.file);for(const [n,scene]of Object.entries(this.scenes))if(!keep.has(n)){if(scene.releaseRasters)scene.releaseRasters();else scene.cache.clear();delete this.scenes[n];}for(const key of this.textureImages.keys())if(!textures.has(key))this.textureImages.delete(key);this.releaseArenaCache();this.metricCache?.clear();}
- async prepareBattle(battle,game){this.error=null;if(globalThis.RoyaleGraphics?.current?.potato){this.preparation=(this.preparation||0)+1;await this.ensureScenes(['ui_battle_end']);this.retainScenes(['ui_battle_end']);globalThis.RoyaleCustomArena?.clear();return this;}const names=sceneDependencies(this.data,game,battle.boatConfiguration?[...battle.initialDecks,...battle.boatConfiguration.cards]:battle.initialDecks,battle.arenaLayout?.custom?'custom':this.arenaId),generation=this.preparation=(this.preparation||0)+1;for(const tower of battle.towers||[]){const skin=globalThis.RoyaleCosmetics?.skin(tower.skin);if(skin?.scene&&this.data.scenes[skin.scene]&&!names.includes(skin.scene))names.push(skin.scene);}if(battle.arenaLayout?.custom){const sourceId=customSourceArenaId(battle.arenaLayout);for(const dep of sceneDependencies(this.data,game,[],sourceId))if(!names.includes(dep))names.push(dep);if(!names.includes('level_spooky_arena')&&this.data.scenes.level_spooky_arena)names.push('level_spooky_arena');}try{await this.ensureScenes(names);await globalThis.RoyaleCustomArena?.prepareAssets?.(battle,this.assetBase);if(generation===this.preparation){this.retainScenes(names);if(battle.arenaLayout?.custom)globalThis.RoyaleCustomArena?.prepare(battle,this);else{this.arenaRuns(false);this.arenaRuns(true);}await this.fx?.prewarmSpells?.(battle.initialDecks?.flat()||[],game);}return this;}catch(e){this.error=e.message;throw e;}}
+ async prepareBattle(battle,game){this.error=null;if(globalThis.RoyaleGraphics?.current?.potato){this.preparation=(this.preparation||0)+1;await this.ensureScenes(['ui_battle_end']);this.retainScenes(['ui_battle_end']);globalThis.RoyaleCustomArena?.clear();return this;}const names=sceneDependencies(this.data,game,battle.boatConfiguration?[...battle.initialDecks,...battle.boatConfiguration.cards]:battle.initialDecks,battle.arenaLayout?.custom?'custom':this.arenaId),generation=this.preparation=(this.preparation||0)+1;for(const tower of battle.towers||[]){const skin=globalThis.RoyaleCosmetics?.skin(tower.skin);if(skin?.scene&&this.data.scenes[skin.scene]&&!names.includes(skin.scene))names.push(skin.scene);}if(battle.arenaLayout?.custom){const sourceId=customSourceArenaId(battle.arenaLayout);for(const dep of sceneDependencies(this.data,game,[],sourceId))if(!names.includes(dep))names.push(dep);if(!names.includes('level_spooky_arena')&&this.data.scenes.level_spooky_arena)names.push('level_spooky_arena');}this.touchdownSourceError=null;if(battle.arenaLayout?.touchdown&&this.data.touchdownArena){try{const optional=touchdownSceneDependencies(this.data);await this.ensureScenes(optional);if(globalThis.RoyaleCustomArena?.sourceStadiumReady&&!globalThis.RoyaleCustomArena.sourceStadiumReady(this))throw Error('Incomplete original Touchdown stadium');for(const name of optional)if(!names.includes(name))names.push(name);}catch(e){this.touchdownSourceError=e.message;}}try{await this.ensureScenes(names);await globalThis.RoyaleCustomArena?.prepareAssets?.(battle,this.assetBase,this);if(generation===this.preparation){this.retainScenes(names);if(battle.arenaLayout?.custom)globalThis.RoyaleCustomArena?.prepare(battle,this);else{this.arenaRuns(false);this.arenaRuns(true);}await this.fx?.prewarmSpells?.(battle.initialDecks?.flat()||[],game);}return this;}catch(e){this.error=e.message;throw e;}}
  async loadHUD(urls){this.ui={};await Promise.all(['level-crown'].map(async key=>{if(urls[key])this.ui[key]=await imageFrom(urls[key]);}));}
  async load(){try{if(!this.data.streamed)await this.ensureScenes(Object.keys(this.data.scenes));this.ready=true;return this;}catch(e){this.error=e.message;throw e;}}
  setArena(id){if(!this.data.arenas.some(a=>a.id===id))throw RangeError('Unknown arena');if(this.arenaId!==id)this.releaseArenaCache();this.arenaId=id;}
@@ -468,4 +475,4 @@ class Library{
  }
  summary(){return{ready:this.ready,error:this.error,arenas:this.data.arenas.length,units:Object.keys(this.data.units).length,textures:this.loadedTextures,residentTextures:this.textureImages.size,residentScenes:Object.keys(this.scenes).length,shapeCache:[...Object.values(this.scenes)].reduce((n,s)=>n+s.cache.size,0),frameSamples:[...Object.values(this.scenes)].reduce((n,s)=>n+s.frameSamples.size,0)}}
 }
-return{teamFilter,battleEndState,rotationPose,arenaLayers,expandStripeUV,sceneDependencies,frameAt,direction,exportName,resolveAnimation,renderPosition,flightOffset,entityElevation,attackClipTime,towerArtPosition,towerAttachmentOffset,shapeRasterScale,kingTowerPose,effectOpacity,projectilePosition,projectileArtScale,rocketAtlasPose,projectilePose,affine,mul,Scene,Library};});
+return{teamFilter,battleEndState,rotationPose,arenaLayers,expandStripeUV,sceneDependencies,touchdownSceneDependencies,frameAt,direction,exportName,resolveAnimation,renderPosition,flightOffset,entityElevation,attackClipTime,towerArtPosition,towerAttachmentOffset,shapeRasterScale,kingTowerPose,effectOpacity,projectilePosition,projectileArtScale,rocketAtlasPose,projectilePose,affine,mul,Scene,Library};});
