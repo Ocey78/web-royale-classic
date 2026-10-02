@@ -40,6 +40,6 @@ const emoteIds=new Set(emotes.map(e=>e.id)),compact=id=>String(id).toLowerCase()
 const sourceAliases=emotes.flatMap(e=>[compact(e.scene+e.animation),compact(e.scene.replace(/_dl$/,'')+e.animation)].map(key=>({key,id:e.id})));
 function resolveEmoteId(id){if(typeof id!=='string')return null;if(emoteIds.has(id))return id;if(id.length>180||!/^[a-zA-Z0-9._:/-]+$/.test(id))return null;
  const value=compact(id),matches=[...new Set(sourceAliases.filter(a=>value.endsWith(a.key)).map(a=>a.id))];return matches.length===1?matches[0]:null;}
-const skin=id=>towerSkins.find(s=>s.id===id)||towerSkins[0];
+const skin=id=>towerSkins.find(s=>s.id===id)||towerSkins.find(s=>s.id==="classic");
 const validEmote=id=>emotes.some(e=>e.id===id),validSkin=id=>towerSkins.some(e=>e.id===id);
 return {EMOTE_PRICE,TOWER_SKIN_PRICE,emotes,towerSkins,retiredTowerSkins,towerSkinAvailability,magicItems,collectionSections,skin,validEmote,validSkin,resolveEmoteId,rarities};});

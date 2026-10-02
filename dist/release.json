@@ -4,9 +4,9 @@
   "snapshot": "3.2557.2",
   "cards": 102,
   "scenes": 117,
-  "runtime": "runtime.7fca6fb3b715.json",
-  "app": "app.ccfbe468bcc7.js",
-  "bootstrap": "bootstrap.05eb98dfb634.js",
+  "runtime": "runtime.32972f0243d2.json",
+  "app": "app.c2d226d22522.js",
+  "bootstrap": "bootstrap.2a9f25f81630.js",
   "styles": "styles.02415febbdc9.css",
   "files": {
     "assets/cards/knight.png": "676613915fa942fbcf3b195b7a3f136f1dc21944f48cc39459d1bd293f259b80",
@@ -1214,18 +1214,18 @@
     "assets/presentation/ink-body.png": "7ab4304cdabc141c7b7ec7574d88436e239e60a909982775e37204766aa6cb56",
     "assets/presentation/ink-body-outline.png": "e7db1afc8bd63c75cc8ee067a7e7f2cee4100e4634e19555f2bd90f8d7232b67",
     "training-data.56c4be256a06.json": "56c4be256a0690372880b24f26e715ea3eb5f1474834e3227c2d093ad68c6b2a",
-    "training-engine.05473d4669ca.js": "05473d4669caa266596f053b949d566a87eb24eeab8a38e0ba57f81c6fe18387",
+    "training-engine.512feb20a7c1.js": "512feb20a7c11aab152a4f3c9f90080cc03ab928f21e78f8575c3adf6acd62ed",
     "training-worker.cd1acab64fa1.js": "cd1acab64fa14074f7c8239c23b4d1532e79411e158bf322831a0e191353b149",
     "assets/webapp/icon-180.png": "95d25ecc83f4ae6bbd6b39309963e7afae3d143e32a258dc434cfa99b2689ded",
     "assets/webapp/icon-192.png": "08fa53a097998183ede6d12af2f507f94e5235dc04fcad38448620a553c1dbb5",
     "assets/webapp/icon-512.png": "81577df60036377a5613428ebbd787de1a1954a953a1f00035576b71def08457",
-    "asset-index.86ab67767d24.json": "86ab67767d24b3454f53a9b8d0318c05a124b635103d0f8fcebcca617fe4801f",
+    "asset-index.c74e61797647.json": "c74e61797647b79eb27ba59bfc565aaa0231454561fcb40cc90cee9a4c8f8f6e",
     "asset-worker.js": "c5891e6850f3c9481da0c115420951a7e69b07ced6f4b6a7f16b6d73482c5bc2",
-    "runtime.7fca6fb3b715.json": "7fca6fb3b71594b4b1958355b755778d53f3a4197237fe16ee9dd24ac5b8c216",
-    "app.ccfbe468bcc7.js": "ccfbe468bcc708755a272378736185a1c21ba4516b1dbfc58d78b6b951b0beb7",
+    "runtime.32972f0243d2.json": "32972f0243d2a09537bddedd99650d29330ae9a28f877b173bc7bdb29405ecfc",
+    "app.c2d226d22522.js": "c2d226d22522953751023b0db7f1504e9963f7813fb204dae1aaebe95fe3464f",
     "manifest.json": "ca88e947421b34ed5c5bbdab7d448025c4d809e5e7dcab80dc4f5e0e5c104389",
     "styles.02415febbdc9.css": "02415febbdc9d0ae9226a9ea9b243ea65515754163f03727b2037f42a7329d64",
-    "bootstrap.05eb98dfb634.js": "05eb98dfb634fd225870a0e300225d9a6672f62280aff433a5065353cd2f0e0c",
-    "index.html": "240ad83926c2060094e97042ecde107ca6584867e8247d482b2d83a903c47a3a"
+    "bootstrap.2a9f25f81630.js": "2a9f25f81630d91f220af7521c810200eade35f37af47b522b2f203d02a41c34",
+    "index.html": "df7f3c212462806ab7644313331e5d3d75b6c2c6712122d680ebd75abbb3e696"
   }
 }
