@@ -14,8 +14,11 @@ shadows, ambient cloud/blimp effects, separate light emitters or universal
 animated-backdrop parity. The v0.50.3 build passed **1,281 tests** and actual Chrome
 checks of all three Touchdown modes across four viewports, including touch
 deployment, source animation clocks and goal-mark pixels. Procedural maps retain
-their static scenery caches when ambient animation is toggled. GitHub Pages
-patch deployment remains pending; see
+their static scenery caches when ambient animation is toggled. The release is
+[live on GitHub Pages](https://ocey78.github.io/web-royale-classic/), with the
+published bundle's hash, source skins and Rocket verified in Chrome.
+[Deployment run 37002557880](https://github.com/Ocey78/web-royale-classic/actions/runs/37002557880)
+succeeded; see
 [BUILD-NOTES-v0.50.3.md](BUILD-NOTES-v0.50.3.md).
 
 Classic retains its historical 102-card roster, balance tables and arenas. Higher

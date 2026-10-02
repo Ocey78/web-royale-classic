@@ -3,7 +3,7 @@
 This artwork patch replaces the earlier Touchdown reference texture with the
 original stadium from the supplied Clash Royale **16.402.2** XAPK. Classic keeps
 its historical **102-card / 3.2557.2** gameplay snapshot and battle engine. The
-verified build is prepared for GitHub Pages; patch publication remains pending.
+verified build is live on GitHub Pages, with its published bundle checked in Chrome.
 
 ## Original Touchdown artwork
 
@@ -62,6 +62,10 @@ digest is
 Source restoration and release-file integrity checks passed. This identifies the
 website payload, separately from an editable project archive.
 
-The patch is prepared for the existing
-[GitHub Pages site](https://ocey78.github.io/web-royale-classic/). Deployment and
-live v0.50.3 verification are pending; the preceding live release is v0.50.2.
+The patch is [live on GitHub Pages](https://ocey78.github.io/web-royale-classic/).
+[Deployment run 37002557880](https://github.com/Ocey78/web-royale-classic/actions/runs/37002557880)
+succeeded for commit `c0de4619d346608c3fc2ffc5fb00a81cf3150f90`. The published
+`app.8b38dc84289b.js` and release digest matched the verified local build. Actual
+Chrome checks of the public site passed original seasonal skins, Rocket, all
+three Touchdown modes across four viewports, phone touch deployment, source
+animation clocks and original goal-mark pixels, with no browser or asset errors.

@@ -16,8 +16,12 @@ restored from the verified distribution with `node tools/restore-source.cjs`;
 use `npm test`, `npm run build` and `npm run serve` for development. Browser
 saves are local to each website address; export a save before changing addresses.
 
-The v0.50.3 build passed **1,281 tests** and actual Chrome Touchdown checks;
-GitHub Pages patch deployment remains pending. See
+The v0.50.3 build passed **1,281 tests** and is
+[live on GitHub Pages](https://ocey78.github.io/web-royale-classic/). Chrome checks
+of the published bundle verified original skins, Rocket and all three Touchdown
+modes across four viewports, including touch deployment and source clocks.
+[Deployment run 37002557880](https://github.com/Ocey78/web-royale-classic/actions/runs/37002557880)
+succeeded and the live bundle matched the verified release hash. See
 [BUILD-NOTES-v0.50.3.md](BUILD-NOTES-v0.50.3.md) for this patch and
 [BUILD-NOTES-v0.50.2.md](BUILD-NOTES-v0.50.2.md) for the preceding verified release.
 
