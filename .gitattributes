@@ -1,0 +1,3 @@
+
+# Preserve checksum-verified generated output on every host.
+dist/** -text

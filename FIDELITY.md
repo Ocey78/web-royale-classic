@@ -1,12 +1,13 @@
-# Fidelity update — v0.50.1
+# Fidelity update — v0.50.2
 
 Classic retains its historical 102-card roster, balance tables and arenas. Higher
 resolution compatible portraits and 83 troop/building scenes use the supplied
 16.402.2 artwork with original animation transforms and frame timing. Browser
 checks verify visible animation in both teams and multiple states. This is a
 browser recreation with local AI and social simulation; complete native gameplay
-and interface identity has not been established. Additional modern seasonal tower
-skins have not yet been imported into this release.
+and interface identity has not been established. Shark Tank, Sandcastle and Fortress
+use complete original seasonal King and Princess Tower scenes, including their
+blue/red exports and animation frames. They add cosmetic choices to the existing shop.
 
 Historical notes below describe their respective releases.
 

@@ -1,18 +1,20 @@
-# Web Royale Classic v0.50.1
+# Web Royale Classic v0.50.2
 
 This Classic release imports higher resolution portraits and compatible troop and
 building animation artwork from the supplied Clash Royale 16.402.2 asset package.
 Its 102-card roster, historical 3.2557.2 balance data, arenas and game rules remain
-the Classic snapshot. Modern cards, evolutions and Heroes are not added.
+the Classic snapshot. Three additional original seasonal tower skins—Shark Tank,
+Sandcastle and Fortress—can be bought and equipped. Modern cards, evolutions and
+Heroes are not added.
 
 The ready-to-play website is in `dist/`. Source image and audio files can be restored
 from the verified distribution with `npm run restore`; use `npm test`,
 `npm run build` and `npm run serve` for development. Browser saves are local to
 each website address; export a save before switching addresses.
 
-Verification: all 1,268 tests passed, and Chrome checks exercised the new portraits,
+Verification: all 1,271 tests passed, and Chrome checks exercised the new portraits,
 144 animated troop drawings, the shop, a battle and the separate Touchdown field.
-See `BUILD-NOTES-v0.50.1.md` for the current scope.
+See `BUILD-NOTES-v0.50.2.md` for the current scope.
 
 ## Previous v0.50.0 release
 

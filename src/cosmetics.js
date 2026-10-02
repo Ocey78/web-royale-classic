@@ -6,7 +6,9 @@ const sourceEmotes=typeof module==='object'&&module.exports?require('./emote-dat
 const emotes=Object.freeze(sourceEmotes.map(e=>Object.freeze({...e,cost:e.free?0:EMOTE_PRICE})));
 // Retired v0.19-v0.21 recolors. Used only for once-per-ID local-gem refunds.
 const retiredTowerSkins=Object.freeze(['lava-fortress','royal-blue','bone-crypt','jungle-ruins','electro-station','frozen-keep']);
+const seasonalSkins=typeof module==='object'&&module.exports?require('./seasonal-skins.js'):globalThis.RoyaleSeasonalSkins||[];
 const towerSkins=Object.freeze([
+ ...seasonalSkins.map(s=>({...s,free:false,cost:TOWER_SKIN_PRICE,description:'Original '+s.name+' seasonal tower artwork and animation.'})),
  {id:'classic',name:'Classic Tower',free:true,cost:0,sourceKind:'original'},
  ...[
   ['source-gold-rush','Gold Rush','goldrush',true,'GoldRush'],
@@ -19,9 +21,9 @@ const towerSkins=Object.freeze([
    ...(hasTop?{princessTop:[`princesstower_${prefix}_01_top`,`princesstower_${prefix}_02_top`]}:{})}}))
 ]);
 const towerSkinAvailability=Object.freeze({
- message:'Three original event tower styles are available.',
- detail:'Gold Rush, Gem Rush and Elixir Pump use their original artwork and animations. Seasonal tower skins are not included.',
- originalSkinCount:3
+ message:'Six original tower styles are available.',
+ detail:'Gold Rush, Gem Rush, Elixir Pump, Shark Tank, Sandcastle and Fortress use their original artwork and animations.',
+ originalSkinCount:6
 });
 const rarities=['Common','Rare','Epic','Legendary'];
 const magicItems=Object.freeze([
