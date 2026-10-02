@@ -1,0 +1,19 @@
+node_modules/
+__pycache__/
+*.pyc
+*.apk
+*.mp4
+Web-Royale-Save*.json
+assets/cards/*.png
+assets/native/*.webp
+assets/ui/*.png
+assets/ui/*.webp
+
+# Source binaries are restored from the checksum-verified dist.
+assets/**/*.png
+assets/**/*.webp
+assets/**/*.wav
+# Never upload mobile packages or raw reference media.
+*.xapk
+*.aab
+*.obb
